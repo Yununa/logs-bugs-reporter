@@ -43,4 +43,7 @@
 		</plugins>
 	</build>
 
+	<modules>
+		<module>log-bugs-dto</module>
+	</modules>
 </project>
