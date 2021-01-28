@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ContextConfiguration(classes=LogDtoTest.TestController.class)//what classes will be in AC
 public class LogDtoTest {
 	public static @RestController class TestController{
-		static LogDto logDtoExp = new LogDto(new Date(), LogType.NO_EXCEPTION,
-				"artifact", 0, "");
+		static LogDto logDtoExp;
 		@PostMapping("/")
 		void testPost(@RequestBody @Valid LogDto logDto) {
 			assertEquals(logDtoExp, logDto);
@@ -40,13 +40,40 @@ public class LogDtoTest {
 	ObjectMapper mapper = new ObjectMapper();
 	@Autowired
 	MockMvc mock;
-	@Test
-	void testPostRun() throws JsonProcessingException, Exception {
-//		TestController.logDtoExp.dateTime = null;
-		assertEquals(200, mock.perform(post("/")
+	@BeforeEach
+	void setup() {
+		TestController.logDtoExp = new LogDto(new Date(), LogType.NO_EXCEPTION,
+				"artifact", 0, "");
+	}
+	void testRun(int expect) throws JsonProcessingException, Exception {	
+		assertEquals(expect, mock.perform(post("/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(TestController.logDtoExp)))
 				.andReturn().getResponse().getStatus());
+	}
+	@Test
+	void testPostRun() throws JsonProcessingException, Exception {
+		int expect = 200;
+		testRun(expect);
+		
+	}
+	@Test
+	void testDateNull() throws JsonProcessingException, Exception {
+		TestController.logDtoExp.dateTime = null;
+		int expect = 400;
+		testRun(expect);
+	}
+	@Test
+	void testLogTypeNull() throws JsonProcessingException, Exception {
+		TestController.logDtoExp.logType = null;
+		int expect = 400;
+		testRun(expect);
+	}
+	@Test
+	void testArtifactEmpty() throws JsonProcessingException, Exception {
+		TestController.logDtoExp.artifact = "";
+		int expect =400;
+		testRun(expect);
 	}
 
 }
