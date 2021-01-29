@@ -17,9 +17,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		 <groupId>telran.logs.bugs</groupId>
-         <artifactId>log-bugs-dto</artifactId>
-         <version>0.0.1</version>
+	        <groupId>telran.logs.bugs</groupId>
+            <artifactId>log-bugs-dto</artifactId>
+            <version>0.0.1</version>
 		</dependency>
+		<dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+        </dependency>
 	</dependencies>
 </project>
