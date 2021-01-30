@@ -67,8 +67,9 @@ class RandomLogsTest {
 			log.logType, Collectors.counting()
 		));
 		logTypeOccurrencis.forEach((key, val) ->{
-			System.out.println();
+			System.out.printf("LogType: %s occurrences: %d\n", key, val);
 		});
+		assertEquals(LogType.values().length, logTypeOccurrencis.entrySet().size());
 	}
 	
 	private void testContent(List<LogDto> logs) {
