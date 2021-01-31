@@ -64,5 +64,10 @@ public class LogDto {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "LogDto [dateTime=" + dateTime + ", logType=" + logType + ", artifact=" + artifact + ", responseTime="
+				+ responseTime + ", result=" + result + "]";
+	}
 	
 }
