@@ -110,10 +110,13 @@ class RandomLogsTest {
 	}
 	@Test
 	void sendRandomLogs() throws InterruptedException {
+		Set<String> logsSet = new HashSet<String>();
 		for (int i = 0; i < 10; i++) {
 			byte[] messageBytes = output.receive(1500).getPayload();
 			String messageStr = new String (messageBytes);
+			logsSet.add(messageStr);
 			System.out.println(messageStr);
 		}
+		assertEquals(10, logsSet.size());
 	}
 }
