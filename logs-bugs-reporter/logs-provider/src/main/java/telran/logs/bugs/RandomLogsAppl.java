@@ -22,7 +22,7 @@ public class RandomLogsAppl {
 	@Bean
 	Supplier<LogDto> random_logs_privider(){
 		
-		return randomLogs::createRandomLog;
+		return randomLogs::createRandomLog;  //producer
 	}
 	
 	
