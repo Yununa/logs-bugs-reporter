@@ -45,11 +45,11 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<modules>
 		<module>log-bugs-dto</module>
 		<module>logs-bugs-mongo-document</module>
 		<module>logs-provider</module>
 		<module>logs-db-populator</module>
+		<module>logs-analyzer</module>
 	</modules>
 </project>
