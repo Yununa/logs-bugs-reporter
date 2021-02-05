@@ -23,7 +23,7 @@ public class LogsAnalyzerService {
 		return this::analyzerMethod;
 	}
     void analyzerMethod(LogDto logDto) {
-    	LOG.debug("recived log{}", logDto);
+    	LOG.debug("\n recived log {}\n", logDto);
     	if(logDto.logType != null && logDto.logType != LogType.NO_EXCEPTION) {
     		streamBridge.send(bindingName, logDto);
     	}

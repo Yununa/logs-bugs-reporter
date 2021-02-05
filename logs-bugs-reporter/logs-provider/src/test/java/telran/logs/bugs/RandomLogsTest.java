@@ -1,5 +1,6 @@
 package telran.logs.bugs;
 import static org.junit.jupiter.api.Assertions.*;
+import org.slf4j.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -12,15 +13,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
+import org.springframework.beans.factory.annotation.Value;
 @SpringBootTest
 @Import(TestChannelBinderConfiguration.class)
 class RandomLogsTest {
-
-	private static final long N_LOGS = 100000;
-	private static final String CLASS_ARTIFACT = "class";
-	private static final String AUTHORIZATION_ARTIFACT = "authorization";
-	private static final String AUTHENTICATION_ARTIFACT = "authentication";
-	private static final int N_LOGS_SENT = 10;
+	
+	static Logger LOG = LoggerFactory.getLogger(RandomLogsTest.class);
+	@Value("${app-class-artifact:class}")
+	String CLASS_ARTIFACT;
+	@Value("${app-authorization-artifact:authorization}")
+	String AUTHORIZATION_ARTIFACT;
+	@Value("${app-authentication-artifact:authentication}")
+	String AUTHENTICATION_ARTIFACT;
+	@Value("${app-n-logs:100000}")
+	long nLogs;
+	@Value("${app-n-logs-sent:10}")
+	int nLogsSent;
 	
 
 	@Autowired
@@ -42,16 +50,24 @@ class RandomLogsTest {
 				break;
 			}
 			case BAD_REQUEST_EXCEPTION:{
-				assertEquals(CLASS_ARTIFACT, val);
+				
+				getArtifactClassTest(val);
 				break;
 			}
 			default:
-				assertEquals(CLASS_ARTIFACT, val);
-				break;
+				getArtifactClassTest(val);
 			}
 		});
 	}
 	
+	private void getArtifactClassTest(String artifact) {
+		assertEquals(CLASS_ARTIFACT, artifact.substring(0, 5));
+		int classNum = Integer.parseInt(artifact.substring(5));
+		assertTrue(classNum >=1 && classNum <= randomLogs.nClasses);
+		
+
+	}
+
 	private EnumMap<LogType, String> getMap() throws NoSuchMethodException, SecurityException,
 	IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method getMethod = randomLogs.getClass().getDeclaredMethod("getArtifactMap");
@@ -64,7 +80,7 @@ class RandomLogsTest {
 	
 	@Test
 	void testLogsDto(){
-		List<LogDto> logs = Stream.generate(() -> randomLogs.createRandomLog()).limit(N_LOGS)
+		List<LogDto> logs = Stream.generate(() -> randomLogs.createRandomLog()).limit(nLogs)
 				.collect(Collectors.toList());
 		testContent(logs);
 		
@@ -72,7 +88,7 @@ class RandomLogsTest {
 			log.logType, Collectors.counting()
 		));
 		logTypeOccurrencis.forEach((key, val) ->{
-			System.out.printf("LogType: %s occurrences: %d\n", key, val);
+			LOG.debug("\n LogType: {};\n occurrences: {}\n", key, val);
 		});
 		assertEquals(LogType.values().length, logTypeOccurrencis.entrySet().size());
 	}
@@ -93,20 +109,19 @@ class RandomLogsTest {
 				break;
 			}
 			case NO_EXCEPTION: {
-				assertEquals(CLASS_ARTIFACT, log.artifact);
+				getArtifactClassTest(log.artifact);
 				assertFalse(0 > log.responseTime);
-				assertTrue(0 < log.responseTime);
 				assertTrue(log.result.isEmpty());
 				break;
 			}
 			case NOT_FOUND_EXCEPTION: {
-				assertEquals(CLASS_ARTIFACT, log.artifact);
+				getArtifactClassTest(log.artifact);
 				assertEquals(0, log.responseTime);
 				assertEquals("", log.result);
 				break;
 			}
 			default:
-				assertEquals(CLASS_ARTIFACT, log.artifact);
+				getArtifactClassTest(log.artifact);
 				assertEquals(0, log.responseTime);
 				assertTrue(log.result.isEmpty());
 				break;
@@ -116,12 +131,12 @@ class RandomLogsTest {
 	@Test
 	void sendRandomLogs() throws InterruptedException {
 		Set<String> logsSet = new HashSet<String>();
-		for (int i = 0; i < N_LOGS_SENT; i++) {
+		for (int i = 0; i < nLogsSent; i++) {
 			byte[] messageBytes = output.receive(1500).getPayload();
 			String messageStr = new String (messageBytes);
 			logsSet.add(messageStr);
-			System.out.println(messageStr);
+			LOG.debug("\n recived in test : {}\n" , messageStr);
 		}
-		assertEquals(10, logsSet.size());
+		assertEquals(nLogsSent, logsSet.size());
 	}
 }

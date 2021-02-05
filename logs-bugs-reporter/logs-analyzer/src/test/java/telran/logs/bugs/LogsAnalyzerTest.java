@@ -43,7 +43,7 @@ public class LogsAnalyzerTest {
 	    sendLogDto(logDto);
 	    Message<byte[]> message = consumer.receive(0, bindingName);
 	    assertNotNull(message);
-	    LOG.debug("receved in consumer {}", new String(message.getPayload()));    
+	    LOG.debug("\n log receved in consumer {}\n", new String(message.getPayload()));    
 	}
 	
 	private void sendLogDto(LogDto logDto) {
