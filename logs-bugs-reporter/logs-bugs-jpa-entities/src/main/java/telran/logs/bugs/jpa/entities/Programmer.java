@@ -5,7 +5,7 @@ import javax.persistence.*;
 public class Programmer {
 	@Id
 	long id;
-	@Column(name = "programmer_name", nullable = false)
+	@Column(name = "name", nullable = false)
 	String name;
 	public Programmer() {
 		

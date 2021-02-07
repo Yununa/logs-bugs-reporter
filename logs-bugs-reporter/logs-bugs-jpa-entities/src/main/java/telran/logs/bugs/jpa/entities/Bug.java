@@ -24,7 +24,7 @@ public class Bug {
 	@Column(nullable = false, name = "openning_method")
 	OpeningMethod openningMethod;
 	@ManyToOne
-	@JoinColumn(nullable = true, name = "programmer_id")  //? true -false
+	@JoinColumn(name = "programmer_id", nullable = true)
 	Programmer programmer;
 	public Bug() {
 		
@@ -90,7 +90,6 @@ public class Bug {
 			return false;
 		return true;
 	}
-	
 	
 
 }
