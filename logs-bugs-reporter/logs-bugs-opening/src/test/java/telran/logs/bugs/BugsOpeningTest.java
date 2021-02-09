@@ -35,12 +35,11 @@ public class BugsOpeningTest {
 	BugsRepo bugsRepo;
 	@Autowired
 	InputDestination input;
-	Programmer programmer = new Programmer(123, "Moshe");
+	Programmer programmer = new Programmer(123, "Moshe", "moshe@gmail.com");
 
 	@Test
 	@Sql("programmersAndArtifacts.sql")
 	void authenticationTest() {
-//		Programmer programmer = new Programmer(123, "Moshe");
 		LogDto logDtoWithBug = new LogDto(new Date(), LogType.AUTHENTICATION_EXCEPTION, BUG_ARTIFACT, 0, BUG_MESSAGE);
 		sendingLogDto(logDtoWithBug);
 		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.ASSIGNED,

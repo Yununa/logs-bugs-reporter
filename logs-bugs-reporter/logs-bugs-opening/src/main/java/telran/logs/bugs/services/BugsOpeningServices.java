@@ -45,10 +45,10 @@ public class BugsOpeningServices {
 		Bug bug = new Bug(getDescription(exceptionLog), LocalDate.now(), null, getBugStatus(programmer),
 				getSeriousness(exceptionLog.logType), OpeningMethod.AUTHOMATIC, programmer);
 		bugsRepo.save(bug);
-		LOG.debug(
-				"\n Bug opening service has added bug:\n description: {};\n bug status: {};\n seriousness: {};\n assigned to programmer: {}\n",
-				getDescription(exceptionLog), getBugStatus(programmer), getSeriousness(exceptionLog.logType),
-				getProgrammerName(programmer));
+		LOG.debug("\n Bug opening service has added bug:\n description: {};\n bug status: {};\n "
+				+ "seriousness: {};\n assigned to programmer: {}\n",
+				getDescription(exceptionLog), getBugStatus(programmer),
+				getSeriousness(exceptionLog.logType), getProgrammerName(programmer));
 
 	}
 
