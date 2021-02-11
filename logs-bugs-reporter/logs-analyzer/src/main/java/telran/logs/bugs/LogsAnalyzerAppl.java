@@ -3,7 +3,6 @@ package telran.logs.bugs;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
-
 @SpringBootApplication
 public class LogsAnalyzerAppl {
 
