@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import telran.logs.bugs.dto.*;
 import java.util.Date;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,9 +21,12 @@ public class LogDocTest {
 	void docStoreTest() {
 		LogDto logDto = new LogDto(new Date(),LogType.NO_EXCEPTION, "artifact",
 				20,"result");
-		logs.save(new LogDoc(logDto)).subscribe();
+		LogDto logDto1 = new LogDto(new Date(),LogType.NO_EXCEPTION, "artifact",
+				25,"result");
+		logs.save(new LogDoc(logDto)).block();
 		LogDoc actualDoc = logs.findAll().blockFirst();
-		assertEquals(logDto, actualDoc.getLogDto());			
+		assertEquals(logDto, actualDoc.getLogDto());
+		assertNotEquals(logDto1, actualDoc.getLogDto());
 	}
 	
 }

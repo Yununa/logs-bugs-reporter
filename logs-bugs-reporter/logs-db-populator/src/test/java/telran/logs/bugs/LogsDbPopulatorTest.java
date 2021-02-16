@@ -1,6 +1,8 @@
 package telran.logs.bugs;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class LogsDbPopulatorTest {
         /* taking and saving to MongoDB logDto */
 		LogDto logDto = new LogDto(new Date(), LogType.NO_EXCEPTION, "artifact", 0, "result");
 		sendingLogDto(logDto);
-		List<LogDoc> logDocs = logs.findAll().buffer().blockFirst();
+		List<LogDoc> logDocs = logs.findAll().buffer(Duration.ofMillis(10)).blockFirst();
 		assertEquals(1, logDocs.size());
 		LogDoc actualDoc = logDocs.get(0);
 		assertEquals(logDto, actualDoc.getLogDto());
