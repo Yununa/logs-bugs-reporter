@@ -29,9 +29,8 @@ public class LogsDbPopulatorAppl {
 
 	void takeAndSaveLogDto(LogDto logDto) {
 		// taking and saving to MongoDB logDto
-		LOG.debug("\n recived log {}\n", logDto);
-		logs.save(new LogDoc(logDto));
-		LOG.debug("\n log saved to MongoDB: {}\n", logDto);
-
+		LOG.debug("\nrecived log {}\n", logDto);
+		LOG.debug("\ntaking and saving to MongoDB logDto\n");
+		logs.save(new LogDoc(logDto)).subscribe(log -> LOG.debug("\nlog saved to MongoDB: {}\n", log.getLogDto()));
 	}
 }

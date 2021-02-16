@@ -3,6 +3,8 @@ package telran.logs.bugs;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Date;
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +34,18 @@ public class LogsDbPopulatorTest {
 	OutputDestination output;
 	@Autowired
 	LogsRepo logs;
+	@BeforeEach
+	void setUp() {
+		
+		logs.deleteAll().subscribe();
+	}		
 
 	@Test
 	void docStoreTest() {
         /* taking and saving to MongoDB logDto */
 		LogDto logDto = new LogDto(new Date(), LogType.NO_EXCEPTION, "artifact", 0, "result");
 		sendingLogDto(logDto);
-		List<LogDoc> logDocs = logs.findAll();
+		List<LogDoc> logDocs = logs.findAll().buffer().blockFirst();
 		assertEquals(1, logDocs.size());
 		LogDoc actualDoc = logDocs.get(0);
 		assertEquals(logDto, actualDoc.getLogDto());
