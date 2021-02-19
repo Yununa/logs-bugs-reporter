@@ -26,6 +26,39 @@ public class RandomLogs {
 	int minResponseTimeValue;
 	@Value("${app-max-response-time-value:200}")
 	int maxResponseTimeValue;
+	
+	public int getnClasses() {
+		return nClasses;
+	}
+
+	public int getExceptionProb() {
+		return exceptionProb;
+	}
+
+	public int getSecExceptionProb() {
+		return secExceptionProb;
+	}
+
+	public int getAuthenticationProb() {
+		return authenticationProb;
+	}
+
+	public int getMinRandomValue() {
+		return minRandomValue;
+	}
+
+	public int getMaxRandomValue() {
+		return maxRandomValue;
+	}
+
+	public int getMinResponseTimeValue() {
+		return minResponseTimeValue;
+	}
+
+	public int getMaxResponseTimeValue() {
+		return maxResponseTimeValue;
+	}
+
 	public LogDto createRandomLog(){
 		LogType logType = getLogType();
 		return new LogDto(new Date(), logType, getArtifact(logType),getResponseTime(logType), ""); 

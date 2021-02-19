@@ -1,16 +1,14 @@
 package telran.logs.bugs;
 
 import java.util.function.Supplier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-
 import telran.logs.bugs.dto.LogDto;
+import telran.logs.bugs.random.RandomLogs;
 
 @SpringBootApplication
 public class RandomLogsAppl {
@@ -18,7 +16,6 @@ public class RandomLogsAppl {
 	@Autowired
 	RandomLogs randomLogs;
 	
-
 	public static void main(String[] args) {
 		SpringApplication.run(RandomLogsAppl.class, args);
 

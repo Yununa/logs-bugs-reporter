@@ -10,5 +10,7 @@ import telran.logs.bugs.mongo.doc.LogDoc;
 
 public interface LogRepository extends ReactiveMongoRepository<LogDoc, ObjectId> {
 
-	Flux<LogDto> findByLogType(LogType logType);	
+	Flux<LogDto> findByLogType(LogType logType);
+
+	Flux<LogDto> findByLogTypeNot(LogType logType);	
 }

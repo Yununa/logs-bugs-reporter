@@ -14,16 +14,22 @@ public class LogsInfoController {
 	static Logger LOG = LoggerFactory.getLogger(LogsInfoController.class);
 	@Autowired
 	LogsInfo logsInfo;
-	@GetMapping(value = "/logs",produces = "application/stream+json")
+	@GetMapping(value = "/logs")
 	Flux<LogDto> getAllLogs() {
 		Flux<LogDto> result = logsInfo.getAllLogs();
 		LOG.debug("Logs sent to a client");
 		return result;
 	}
-	@GetMapping(value = "/logs/type",produces = "application/stream+json")
+	@GetMapping(value = "/logs/type")
 	Flux<LogDto> getLogsByTypes(@RequestParam(name="type") LogType logType) {
 		Flux<LogDto> result = logsInfo.getLogsType(logType);
 		LOG.debug("Logs of type {} sent to a client", logType);
+		return result;
+	}
+	@GetMapping(value = "/logs/exceptions")
+	Flux<LogDto> getAllExceptions() {
+		Flux<LogDto> result = logsInfo.getAllExceptions();
+		LOG.debug("Logs Exceptions sent to a client");
 		return result;
 	}
 
