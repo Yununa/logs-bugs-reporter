@@ -4,20 +4,20 @@ import org.slf4j.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.random.RandomLogs;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
-@Import(TestChannelBinderConfiguration.class)
+@ExtendWith(SpringExtension.class)
+@EnableAutoConfiguration
 @ContextConfiguration(classes = RandomLogs.class)
 class RandomLogsTest {
 	
