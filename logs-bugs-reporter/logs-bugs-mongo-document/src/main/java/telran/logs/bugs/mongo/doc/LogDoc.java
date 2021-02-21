@@ -12,6 +12,7 @@ import telran.logs.bugs.dto.*;
 
 @Document(collection="logs")
 public class LogDoc {
+	public static final String LOG_TYPE = "logType";
 	@Id
 	ObjectId id;
 	public ObjectId getId() {

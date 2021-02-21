@@ -10,5 +10,4 @@ public class LogsInfoAppl {
 		SpringApplication.run(LogsInfoAppl.class, args);
 
 	}
-
 }
