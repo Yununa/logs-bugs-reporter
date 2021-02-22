@@ -102,8 +102,6 @@ public class LogsInfoTest {
 
 	@Test
 	void badRequestLogsTest() {
-//		webClient.get().uri(LOGS_TYPE + "?" + TYPE + "=EXCEPTION")
-//		.exchange().expectStatus().isBadRequest();
 		getBadRequest(LOGS_TYPE, TYPE, "EXCEPTION");
 	}
 
@@ -121,44 +119,33 @@ public class LogsInfoTest {
 	@Test
 	void logsTypeCountTest() {
 		LogTypeCount[] expected = {
-
 				new LogTypeCount(LogType.AUTHENTICATION_EXCEPTION, authenticationExceptions.size()),
 				new LogTypeCount(LogType.NO_EXCEPTION, noExceptionLogs.size()),
 				new LogTypeCount(LogType.AUTHORIZATION_EXCEPTION, authorizationExceptions.size()),
 				new LogTypeCount(LogType.BAD_REQUEST_EXCEPTION, badRequestExceptions.size()) };
 		runTest(LOGS_DISTRIBUTION_TYPE, LogTypeCount[].class, expected);
-//		webClient.get().uri(LOGS_DISTRIBUTION_TYPE).exchange().expectStatus().isOk()
-//		.expectBody(LogTypeCount[].class).isEqualTo(expected);
 	}
 
 	@Test
 	void artifactsCountTest() {
 		ArtifactCount[] expected = {
-
 				new ArtifactCount(ARTIFACT_AUTHENTICATION, authenticationExceptions.size()),
 				new ArtifactCount(ARTIFACT_NO_EXEPTION, noExceptionLogs.size()),
 				new ArtifactCount(ARTIFACT_AUTHORIZATION, authorizationExceptions.size()),
 				new ArtifactCount(ARTIFACT_BAD_REQUEST, badRequestExceptions.size()) };
 		runTest(LOGS_DISTRIBUTION_ARTIFACT, ArtifactCount[].class, expected);
-//		webClient.get().uri(LOGS_DISTRIBUTION_ARTIFACT).exchange().expectStatus().isOk()
-//		.expectBody(ArtifactCount[].class).isEqualTo(expected);
-
 	}
 
 	@Test
 	void mostEncounteredTypesTest() {
 		LogType[] expected = {
-
 				LogType.AUTHENTICATION_EXCEPTION, LogType.NO_EXCEPTION };
 		runTest(LOGS_ENCOUNTERED_EXCPTIONS, LogType[].class, expected);
-//		webClient.get().uri(LOGS_ENCOUNTERED_EXCPTIONS).exchange().expectStatus().isOk()
-//		.expectBody(LogType[].class).isEqualTo(expected);
 	}
 
 	@Test
 	void mostEncounteredArtifacts() {
 		String[] expected = {
-
 				ARTIFACT_AUTHENTICATION, ARTIFACT_NO_EXEPTION };
 		runTest(LOGS_ENCOUNTERED_ARTIFACTS, String[].class, expected);
 	}
