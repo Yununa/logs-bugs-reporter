@@ -42,20 +42,20 @@ public class LogsInfoImpl implements LogsInfo {
 
 	@Override
 	public Flux<LogType> getMostEncounteredExceptionTypes(int nExceptions) {
-		// TODO Auto-generated method stub
-		return null;
+		Flux<LogTypeCount> logsCount = logRepository.getMostEncounteredExceptionTypes(nExceptions);
+		return logsCount.map(t -> t.logType);
 	}
 
 	@Override
 	public Flux<ArtifactCount> getArtifactOccurrences() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return logRepository.getArtifactCount();
 	}
 
 	@Override
 	public Flux<String> getMostEncounteredArtifacts(int nArtifacts) {
-		// TODO Auto-generated method stub
-		return null;
+		Flux<ArtifactCount> artifactsCount  = logRepository.getMostEncounteredArtifacts(nArtifacts);
+		return artifactsCount.map(ac -> ac.artifact);
 	}
 
 }
