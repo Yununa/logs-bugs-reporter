@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.query.Criteria;
+
 import reactor.core.publisher.Flux;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.mongo.doc.LogDoc;
@@ -21,8 +23,7 @@ public class LogStatisticsImpl implements LogStatistics {
 	public Flux<LogTypeCount> getLogTypeCounts() {
 		groupField = LogDoc.LOG_TYPE;
 		projectField = LogTypeCount.LOG_TYPE;
-		List<AggregationOperation> aggregationOperations = new ArrayList<AggregationOperation>();
-		return mongoTemplate.aggregate(getPipeline(groupField, projectField, aggregationOperations),
+		return mongoTemplate.aggregate(getPipeline(groupField, projectField, new ArrayList<>()),
 				LogTypeCount.class);
 	}
 
@@ -30,7 +31,8 @@ public class LogStatisticsImpl implements LogStatistics {
 	public Flux<LogTypeCount> getMostEncounteredExceptionTypes(int nExceptions) {
 		groupField = LogDoc.LOG_TYPE;
 		projectField = LogTypeCount.LOG_TYPE;
-		List<AggregationOperation> aggregationOperations = new ArrayList<AggregationOperation>();
+		List<AggregationOperation> aggregationOperations = new ArrayList<>();
+		aggregationOperations.add(Aggregation.match(Criteria.where(LogDoc.LOG_TYPE).ne(LogType.NO_EXCEPTION)));
 		return mongoTemplate.aggregate(getLimitPipeline(groupField, projectField, aggregationOperations, nExceptions),
 				LogTypeCount.class);
 	}
@@ -39,8 +41,7 @@ public class LogStatisticsImpl implements LogStatistics {
 	public Flux<ArtifactCount> getArtifactCount() {
 		groupField = LogDoc.ARTIFACT;
 		projectField = ArtifactCount.ARTIFACT;
-		List<AggregationOperation> aggregationOperations = new ArrayList<AggregationOperation>();
-		return mongoTemplate.aggregate(getPipeline(groupField, projectField, aggregationOperations),
+		return mongoTemplate.aggregate(getPipeline(groupField, projectField, new ArrayList<>()),
 				ArtifactCount.class);
 	}
 
@@ -48,8 +49,7 @@ public class LogStatisticsImpl implements LogStatistics {
 	public Flux<ArtifactCount> getMostEncounteredArtifacts(int nArtifacts) {
 		groupField = LogDoc.ARTIFACT;
 		projectField = ArtifactCount.ARTIFACT;
-		List<AggregationOperation> aggregationOperations = new ArrayList<AggregationOperation>();
-		return mongoTemplate.aggregate(getLimitPipeline(groupField, projectField, aggregationOperations, nArtifacts),
+		return mongoTemplate.aggregate(getLimitPipeline(groupField, projectField, new ArrayList<>(), nArtifacts),
 				ArtifactCount.class);
 	}
 
@@ -62,7 +62,8 @@ public class LogStatisticsImpl implements LogStatistics {
 
 	private TypedAggregation<LogDoc> getLimitPipeline(String groupField, String ProjectField,
 			List<AggregationOperation> aggregationOperations, int limit) {
-		fillOperationsLimitList(groupField, ProjectField, aggregationOperations, limit);
+		fillOperationsList(groupField, ProjectField, aggregationOperations);
+		aggregationOperations.add(Aggregation.limit(limit));
 		TypedAggregation<LogDoc> pipeline = Aggregation.newAggregation(LogDoc.class, aggregationOperations);
 		return pipeline;
 	}
@@ -74,18 +75,6 @@ public class LogStatisticsImpl implements LogStatistics {
 		SortOperation sortOperation = Aggregation.sort(Direction.DESC, COUNT);
 		aggregationOperations.add(groupOperation);
 		aggregationOperations.add(sortOperation);
-		aggregationOperations.add(projectionOperation);
-	}
-
-	private void fillOperationsLimitList(String groupField, String projectField,
-			List<AggregationOperation> aggregationOperations, int limit) {
-		GroupOperation groupOperation = Aggregation.group(groupField).count().as(COUNT);
-		ProjectionOperation projectionOperation = Aggregation.project(COUNT).and("_id").as(projectField);
-		SortOperation sortOperation = Aggregation.sort(Direction.DESC, COUNT);
-		LimitOperation limitOperation = Aggregation.limit(limit);
-		aggregationOperations.add(groupOperation);
-		aggregationOperations.add(sortOperation);
-		aggregationOperations.add(limitOperation);
 		aggregationOperations.add(projectionOperation);
 	}
 

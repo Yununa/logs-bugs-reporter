@@ -139,7 +139,7 @@ public class LogsInfoTest {
 	@Test
 	void mostEncounteredTypesTest() {
 		LogType[] expected = {
-				LogType.AUTHENTICATION_EXCEPTION, LogType.NO_EXCEPTION };
+				LogType.AUTHENTICATION_EXCEPTION, LogType.AUTHORIZATION_EXCEPTION };
 		runTest(LOGS_ENCOUNTERED_EXCPTIONS, LogType[].class, expected);
 	}
 
