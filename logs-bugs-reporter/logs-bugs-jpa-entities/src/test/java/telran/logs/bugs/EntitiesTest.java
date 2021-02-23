@@ -2,7 +2,6 @@ package telran.logs.bugs;
 
 import java.time.LocalDate;
 import java.util.*;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
+import telran.logs.bugs.dto.*;
 import telran.logs.bugs.jpa.entities.*;
 
 @ExtendWith(SpringExtension.class)

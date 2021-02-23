@@ -10,17 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import telran.logs.bugs.dto.LogDto;
-import telran.logs.bugs.dto.LogType;
-import telran.logs.bugs.jpa.entities.Artifact;
-import telran.logs.bugs.jpa.entities.Bug;
-import telran.logs.bugs.jpa.entities.BugStatus;
-import telran.logs.bugs.jpa.entities.OpeningMethod;
-import telran.logs.bugs.jpa.entities.Programmer;
-import telran.logs.bugs.jpa.entities.Seriousness;
-import telran.logs.bugs.repository.ArtifactsRepo;
-import telran.logs.bugs.repository.BugsRepo;
-import telran.logs.bugs.repository.ProgrammersRepo;
+import telran.logs.bugs.dto.*;
+import telran.logs.bugs.jpa.entities.*;
+import telran.logs.bugs.repository.*;
 
 @Service
 public class BugsOpeningServices {

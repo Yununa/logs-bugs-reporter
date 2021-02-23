@@ -15,13 +15,8 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.junit.jupiter.api.Assertions.*;
 import telran.logs.bugs.repository.BugsRepo;
 import telran.logs.bugs.repository.ProgrammersRepo;
-import telran.logs.bugs.dto.LogDto;
-import telran.logs.bugs.dto.LogType;
-import telran.logs.bugs.jpa.entities.Bug;
-import telran.logs.bugs.jpa.entities.BugStatus;
-import telran.logs.bugs.jpa.entities.OpeningMethod;
-import telran.logs.bugs.jpa.entities.Programmer;
-import telran.logs.bugs.jpa.entities.Seriousness;
+import telran.logs.bugs.dto.*;
+import telran.logs.bugs.jpa.entities.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
