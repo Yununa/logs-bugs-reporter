@@ -1,22 +1,23 @@
 package telran.logs.bugs.jpa.entities;
+
 import java.time.LocalDate;
-
 import javax.persistence.*;
-
+import static telran.logs.bugs.api.DtoConstants.*;
 import telran.logs.bugs.dto.BugStatus;
 import telran.logs.bugs.dto.OpeningMethod;
 import telran.logs.bugs.dto.Seriousness;
+
 @Entity
-@Table(name = "bugs")
+@Table(name = BUGS)
 public class Bug {
 	@Id
 	@GeneratedValue
 	long id;  
 	@Column(nullable = false)
 	String description;
-	@Column(name = "date_open", nullable = false)
+	@Column(name = DATE_OPEN, nullable = false)
 	LocalDate dateOpen;
-	@Column(name = "date_close", nullable = true)
+	@Column(name = DATE_CLOSE, nullable = true)
 	LocalDate dateClose;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -25,10 +26,10 @@ public class Bug {
 	@Column(nullable = false)
 	Seriousness seriousness;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, name = "openning_method")
+	@Column(nullable = false, name = OPENING_METHOD)
 	OpeningMethod openningMethod;
 	@ManyToOne
-	@JoinColumn(name = "programmer_id", nullable = true)
+	@JoinColumn(name = PROGRAMMER_ID, nullable = true)
 	Programmer programmer;
 	public Bug() {
 		

@@ -5,7 +5,7 @@ import java.util.*;
 import telran.logs.bugs.dto.*;
 
 public interface BugsReporter {
-	ProgrammerDto addprogrammer(ProgrammerDto programmerDto);
+	ProgrammerDto addProgrammer(ProgrammerDto programmerDto);
 	ArtifactDto addArtifact(ArtifactDto artifactDto);
 	BugResponseDto openBug(BugDto bugDto);
 	BugResponseDto openAndAssingBug(BugAssignDto bugDto);

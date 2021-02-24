@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.interfaces.LogsInfo;
-import static telran.logs.bugs.dto.LogsInfoConstants.*;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class LogsInfoController {
 	static Logger LOG = LoggerFactory.getLogger(LogsInfoController.class);
 	@Autowired
 	LogsInfo logsInfo;
-	@GetMapping(value = LOGS,produces=APPL_STREAM_JSON)
+	@GetMapping(value = LOGS_URI,produces=APPL_STREAM_JSON)
 	Flux<LogDto> getAllLogs() {
 		Flux<LogDto> result = logsInfo.getAllLogs();
 		LOG.debug("Logs sent to a client");

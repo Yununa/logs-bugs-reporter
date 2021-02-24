@@ -1,13 +1,15 @@
 package telran.logs.bugs.jpa.entities;
 import javax.persistence.*;
+import static telran.logs.bugs.api.DtoConstants.*;
+
 @Entity
-@Table(name = "artifacts")
+@Table(name = ARTIFACTS)
 public class Artifact {
 	@Id
-	@Column(name = "artifact_id")
+	@Column(name = ARTIFACT_ID)
 	String artifsctId;
 	@ManyToOne
-	@JoinColumn(name = "programmer_id", nullable = false)
+	@JoinColumn(name = PROGRAMMER_ID, nullable = false)
 	Programmer programmer;
 	public Artifact() {
 		

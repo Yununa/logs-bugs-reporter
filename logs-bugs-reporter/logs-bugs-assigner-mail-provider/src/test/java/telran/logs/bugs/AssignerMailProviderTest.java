@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -19,7 +20,7 @@ public class AssignerMailProviderTest {
 	
 	@Test
 	void emailExistingTest() {
-		webClient.get().uri("/mail/assigner")
+		webClient.get().uri(MAIL_ASSIGNER)
 		.exchange().expectStatus().isOk()
 		.expectBody(String.class).isEqualTo(assignerMail);
 	}

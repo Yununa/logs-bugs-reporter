@@ -2,7 +2,6 @@ package telran.logs.bugs;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotEmpty;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -12,7 +11,7 @@ import reactor.core.publisher.Flux;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.mongo.doc.LogDoc;
 import telran.logs.bugs.repo.LogRepository;
-import static telran.logs.bugs.dto.LogsInfoConstants.*;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -30,15 +29,7 @@ public class LogsInfoTest {
 	static List<LogDto> badRequestExceptions;
 	static List<LogDto> allExceptions;
 	static Date DATE = new Date();
-	static final String ARTIFACT = "artifact";
-	static final String RESULT = "result";
-	private static final String AUTHENTICATION_ERROR = "authentication error";
-	private static final String AUTHORIZATION_ERROR = "authorization error";
-	private static final String BAD_REQUEST_ERROR = "bad request error";
-	private static final @NotEmpty String ARTIFACT_AUTHENTICATION = ARTIFACT + LogType.AUTHENTICATION_EXCEPTION;
-	private static final @NotEmpty String ARTIFACT_AUTHORIZATION = ARTIFACT + LogType.AUTHORIZATION_EXCEPTION;
-	private static final @NotEmpty String ARTIFACT_BAD_REQUEST = ARTIFACT + LogType.BAD_REQUEST_EXCEPTION;
-	private static final @NotEmpty String ARTIFACT_NO_EXEPTION = ARTIFACT + LogType.NO_EXCEPTION;
+
 
 	@BeforeAll
 	static void setUp() {
@@ -84,7 +75,7 @@ public class LogsInfoTest {
 	@Order(1)
 	void allLogsTest() {
 		getAllLogs();
-		webClient.get().uri(LOGS).exchange().expectStatus().isOk().expectBodyList(LogDto.class).isEqualTo(allLogs);
+		webClient.get().uri(LOGS_URI).exchange().expectStatus().isOk().expectBodyList(LogDto.class).isEqualTo(allLogs);
 
 	}
 
@@ -96,7 +87,7 @@ public class LogsInfoTest {
 
 	@Test
 	void noExceptionLogsTest() {
-		webClient.get().uri(LOGS_TYPE + "?" + TYPE + "=NO_EXCEPTION").exchange().expectStatus().isOk()
+		webClient.get().uri(LOGS_TYPE + "?" + TYPE + "=" + LogType.NO_EXCEPTION).exchange().expectStatus().isOk()
 				.expectBodyList(LogDto.class).isEqualTo(noExceptionLogs);
 	}
 

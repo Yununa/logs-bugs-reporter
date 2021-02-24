@@ -1,11 +1,10 @@
 package telran.logs.bugs;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
-
+import static telran.logs.bugs.api.DtoConstants.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class LogsDbPopulatorTest {
 	@Test
 	void docStoreTest() {
         /* taking and saving to MongoDB logDto */
-		LogDto logDto = new LogDto(new Date(), LogType.NO_EXCEPTION, "artifact", 0, "result");
+		LogDto logDto = new LogDto(new Date(), LogType.NO_EXCEPTION, ARTIFACT, 0, RESULT);
 		sendingLogDto(logDto);
 		List<LogDoc> logDocs = logs.findAll().delaySubscription(Duration.ofMillis(100))
 				.buffer().blockFirst();

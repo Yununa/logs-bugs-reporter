@@ -1,13 +1,15 @@
 package telran.logs.bugs.jpa.entities;
 import javax.persistence.*;
+import static telran.logs.bugs.api.DtoConstants.*;
+
 @Entity
-@Table(name = "programmers")
+@Table(name = PROGRAMMERS)
 public class Programmer {
 	@Id
 	long id;
-	@Column(name = "name", nullable = false)
+	@Column(name = NAME, nullable = false)
 	String name;
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = EMAIL, nullable = false, unique = true)
 	String email;
 	public Programmer() {
 		

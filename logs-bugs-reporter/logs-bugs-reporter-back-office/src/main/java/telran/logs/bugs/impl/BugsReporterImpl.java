@@ -5,19 +5,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.interfaces.BugsReporter;
 import telran.logs.bugs.jpa.entities.*;
 import telran.logs.bugs.jpa.repo.*;
 
-public class BugsReporterimpl implements BugsReporter {
+@Service
+public class BugsReporterImpl implements BugsReporter {
 
 	BugRepository bugRepository;
 	ArtifactRepository artifactRepository;
 	ProgrammerRepository programmerRepository;
 	@Autowired
-	public BugsReporterimpl(BugRepository bugRepository, ArtifactRepository artifactRepository,
+	public BugsReporterImpl(BugRepository bugRepository, ArtifactRepository artifactRepository,
 			ProgrammerRepository programmerRepository) {
 		this.bugRepository = bugRepository;
 		this.artifactRepository = artifactRepository;
@@ -26,7 +28,7 @@ public class BugsReporterimpl implements BugsReporter {
 
 	@Override
 	@Transactional
-	public ProgrammerDto addprogrammer(ProgrammerDto programmerDto) {
+	public ProgrammerDto addProgrammer(ProgrammerDto programmerDto) {
 		// FIXME exceptions had handling and key duplication check
 		programmerRepository.save(new Programmer(programmerDto.id, programmerDto.name, programmerDto.email));
 		return programmerDto;

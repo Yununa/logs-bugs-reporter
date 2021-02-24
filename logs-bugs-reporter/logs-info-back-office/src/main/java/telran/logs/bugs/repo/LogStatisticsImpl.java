@@ -7,13 +7,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
-
+import static telran.logs.bugs.api.DtoConstants.*;
 import reactor.core.publisher.Flux;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.mongo.doc.LogDoc;
 
 public class LogStatisticsImpl implements LogStatistics {
-	private static final String COUNT = "count";
 	String groupField;
 	String projectField;
 	@Autowired

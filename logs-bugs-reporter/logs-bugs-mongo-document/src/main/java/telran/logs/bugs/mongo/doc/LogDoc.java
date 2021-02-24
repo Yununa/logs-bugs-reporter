@@ -1,17 +1,16 @@
 package telran.logs.bugs.mongo.doc;
 
 import java.util.Date;
-
 import javax.validation.constraints.NotNull;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import static telran.logs.bugs.api.DtoConstants.*;
 import telran.logs.bugs.dto.*;
 
-@Document(collection="logs")
+@Document(collection= LOGS)
 public class LogDoc {
+	
 	public static final String LOG_TYPE = "logType";
 	public static final String ARTIFACT = "artifact";
 	@Id

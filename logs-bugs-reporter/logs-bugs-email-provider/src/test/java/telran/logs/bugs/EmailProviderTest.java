@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -18,7 +19,7 @@ public class EmailProviderTest {
 	@Test
 	@Sql("programmerArtifact.sql")
 	void emailExisting() {
-		webClient.get().uri("/email/artifact1")
+		webClient.get().uri(EMAIL_ARTIFACT_NUMBER + "1")
 		.exchange().expectStatus().isOk()
 		.expectBody(String.class).isEqualTo("moshe@gmail.com");
 		
@@ -27,7 +28,7 @@ public class EmailProviderTest {
 	@Test
 	@Sql("programmerArtifact.sql")
 	void emailNoExisting() {
-		webClient.get().uri("/email/artfact1")
+		webClient.get().uri(EMAIL_ARTIFACT_NUMBER + "1")
 		.exchange().expectStatus().isOk()
 		.expectBody(String.class).isEqualTo("");
 	}

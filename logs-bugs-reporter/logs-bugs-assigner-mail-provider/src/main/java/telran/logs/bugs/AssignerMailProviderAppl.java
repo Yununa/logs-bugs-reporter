@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @SpringBootApplication
 @RestController
@@ -20,7 +21,7 @@ public class AssignerMailProviderAppl {
 
 	}
 	
-	@GetMapping("/mail/assigner")
+	@GetMapping(MAIL_ASSIGNER)
 	String getAssignerMail() {
 		LOG.debug("\nassigner mail is {}", assignerMail);
 		return assignerMail;

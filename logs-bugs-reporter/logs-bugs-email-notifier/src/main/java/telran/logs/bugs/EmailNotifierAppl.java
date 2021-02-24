@@ -12,12 +12,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import telran.logs.bugs.client.EmailProviderClient;
 import telran.logs.bugs.dto.LogDto;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @SpringBootApplication
 public class EmailNotifierAppl {
 	Logger LOG = LoggerFactory.getLogger(EmailNotifierAppl.class);
-	private static final String PROGRAMMER_NAME = "Programmer";
-	private static final String ASSIGNER_NAME = "Opened Bugs Assigner";
+
 	@Autowired
     EmailProviderClient emailClient;
 	@Autowired

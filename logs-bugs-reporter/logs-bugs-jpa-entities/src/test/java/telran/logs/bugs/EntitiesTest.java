@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.jpa.entities.*;
+import static telran.logs.bugs.api.DtoConstants.*;
 
 @ExtendWith(SpringExtension.class)
 @EnableAutoConfiguration
@@ -27,9 +28,9 @@ public class EntitiesTest {
 	void bugCreation() {
 		Programmer programmer = new Programmer(123, "Moshe", "moshe@gmail.com");
 		programmers.save(programmer);
-		Artifact artifact = new Artifact("authentication", programmer);
+		Artifact artifact = new Artifact(AUTHENTICATION, programmer);
 		artifacts.save(artifact);
-		Bug bug = new Bug("description", LocalDate.now(), null, BugStatus.ASSIGNED, Seriousness.MINOR,
+		Bug bug = new Bug(DESCRIPTION, LocalDate.now(), null, BugStatus.ASSIGNED, Seriousness.MINOR,
 				OpeningMethod.AUTHOMATIC, programmer);
 		bugs.save(bug);
 		List<Bug> bugsList = bugs.findAll();
