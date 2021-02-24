@@ -2,53 +2,53 @@ package telran.logs.bugs.controllers;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import telran.logs.bugs.dto.AssignBugData;
 import telran.logs.bugs.dto.BugAssignDto;
 import telran.logs.bugs.dto.BugDto;
 import telran.logs.bugs.dto.BugResponseDto;
 import telran.logs.bugs.dto.ProgrammerDto;
-import telran.logs.bugs.impl.BugsReporterImpl;
+import telran.logs.bugs.interfaces.BugsReporter;
 import static telran.logs.bugs.api.DtoConstants.*;
 import java.util.*;
-
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 @RestController
-public class BugsReporterController {
+class BugsReporterController {
 	static Logger LOG = LoggerFactory.getLogger(BugsReporterController.class);
 	@Autowired
-	BugsReporterImpl bugsReporterImpl;
+	BugsReporter bugsReporter;
 	
-	@GetMapping(value = BUGS_PROGRAMMERS)
-	public ProgrammerDto addProgrammer(@Value(value = PROGRAMMER) ProgrammerDto programmerDto){
-	         ProgrammerDto result = bugsReporterImpl.addProgrammer(programmerDto);
+	@GetMapping(BUGS_PROGRAMMERS)
+	ProgrammerDto addProgrammer(@Valid @RequestBody ProgrammerDto programmerDto){
+	         ProgrammerDto result = bugsReporter.addProgrammer(programmerDto);
 		LOG.debug("Programmer is added");
 		return result;
 	}
 	
-	@GetMapping(value = BUGS_OPEN)
-	BugResponseDto openBug(@Value(value = OPENING_METHOD) BugDto bugDto){
+	@GetMapping(BUGS_OPEN)
+	BugResponseDto openBug(@Valid @RequestBody BugDto bugDto){
 		LOG.debug("The bug is opened");
-		return bugsReporterImpl.openBug(bugDto);
+		return bugsReporter.openBug(bugDto);
 	}
-	@GetMapping(value = BUGS_OPEN_ASSIGN)
-	public BugResponseDto openAndAssingBug(@Value(value = ASSIGNER_NAME) BugAssignDto bugDto){
+	@GetMapping(BUGS_OPEN_ASSIGN)
+	BugResponseDto openAndAssingBug(@Valid @RequestBody BugAssignDto bugDto){
 		LOG.debug("the bug is opened and assugned");
-		return bugsReporterImpl.openAndAssingBug(bugDto);
+		return bugsReporter.openAndAssingBug(bugDto);
 	}
 	
-	@GetMapping(value = BUGS_ASSIGN)
-	public void assignBug(@Value(value = ASSIGNER_NAME) AssignBugData assignData){
-	bugsReporterImpl.assignBug(assignData);
+	@GetMapping(BUGS_ASSIGN)
+	void assignBug(@Valid @RequestBody AssignBugData assignData){
+	bugsReporter.assignBug(assignData);
 		LOG.debug("Assign bug data");
 	}
-	@GetMapping(value = BUGS_PROGRAMMERS)
-	public List<BugResponseDto> getBugsProgrammer(@PathVariable(name = ID) @Min(1) long programmerId){
-		List<BugResponseDto> result = bugsReporterImpl.getBugsProgrammer(programmerId);
+	@GetMapping(BUGS_PROGRAMMERS)
+	List<BugResponseDto> getBugsProgrammer(@RequestParam(name = PROGRAMMER_ID) @Min(1) long programmerId){
+		List<BugResponseDto> result = bugsReporter.getBugsProgrammer(programmerId);
 		LOG.debug("\nProgrammer Id is added to list with size: {}", result.size());
 		return result;
 	}
