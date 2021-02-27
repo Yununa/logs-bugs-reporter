@@ -1,6 +1,7 @@
 package telran.logs.bugs.dto;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.validation.constraints.*;
 
@@ -20,12 +21,7 @@ public class BugDto {
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((dateOpen == null) ? 0 : dateOpen.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((seriousness == null) ? 0 : seriousness.hashCode());
-		return result;
+		return Objects.hash(dateOpen, description, seriousness);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -36,18 +32,9 @@ public class BugDto {
 		if (getClass() != obj.getClass())
 			return false;
 		BugDto other = (BugDto) obj;
-		if (dateOpen == null) {
-			if (other.dateOpen != null)
-				return false;
-		} else if (!dateOpen.equals(other.dateOpen))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (seriousness != other.seriousness)
-			return false;
-		return true;
+		return Objects.equals(dateOpen, other.dateOpen) && Objects.equals(description, other.description)
+				&& seriousness == other.seriousness;
 	}
+
+
 }

@@ -1,7 +1,7 @@
 package telran.logs.bugs.dto;
 
 import java.time.LocalDate;
-
+import java.util.Objects;
 import javax.validation.constraints.*;
 
 public class BugAssignDto extends BugDto {
@@ -16,15 +16,13 @@ public class BugAssignDto extends BugDto {
 	public BugAssignDto() {
 
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + (int) (programmerId ^ (programmerId >>> 32));
+		result = prime * result + Objects.hash(programmerId);
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -34,10 +32,7 @@ public class BugAssignDto extends BugDto {
 		if (getClass() != obj.getClass())
 			return false;
 		BugAssignDto other = (BugAssignDto) obj;
-		if (programmerId != other.programmerId)
-			return false;
-		return true;
+		return programmerId == other.programmerId;
 	}
-	
 
 }

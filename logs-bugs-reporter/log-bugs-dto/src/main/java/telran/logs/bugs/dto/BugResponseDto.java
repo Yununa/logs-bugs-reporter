@@ -1,40 +1,37 @@
 package telran.logs.bugs.dto;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class BugResponseDto extends BugAssignDto {
-	@Min(1)
+	
 	public long bugId;
 	public LocalDate dateClose;
-	public BugStatus bagstatus;
+	public BugStatus bagStatus;
 	public OpeningMethod openingMethod;
 
 	public BugResponseDto(@NotNull Seriousness seriousness, @NotEmpty String description, LocalDate dateOpen,
-			@Min(1) long programmerId, @Min(1) long bugId, LocalDate dateClose, BugStatus bagstatus,
+			@Min(1) long programmerId, long bugId, LocalDate dateClose, BugStatus bagStatus,
 			OpeningMethod openingMethod) {
 		super(seriousness, description, dateOpen, programmerId);
 		this.bugId = bugId;
 		this.dateClose = dateClose;
-		this.bagstatus = bagstatus;
+		this.bagStatus = bagStatus;
 		this.openingMethod = openingMethod;
 	}
-	public BugResponseDto() {
-		
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((bagstatus == null) ? 0 : bagstatus.hashCode());
-		result = prime * result + (int) (bugId ^ (bugId >>> 32));
-		result = prime * result + ((dateClose == null) ? 0 : dateClose.hashCode());
-		result = prime * result + ((openingMethod == null) ? 0 : openingMethod.hashCode());
+		result = prime * result + Objects.hash(bagStatus, bugId, dateClose, openingMethod);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -44,19 +41,12 @@ public class BugResponseDto extends BugAssignDto {
 		if (getClass() != obj.getClass())
 			return false;
 		BugResponseDto other = (BugResponseDto) obj;
-		if (bagstatus != other.bagstatus)
-			return false;
-		if (bugId != other.bugId)
-			return false;
-		if (dateClose == null) {
-			if (other.dateClose != null)
-				return false;
-		} else if (!dateClose.equals(other.dateClose))
-			return false;
-		if (openingMethod != other.openingMethod)
-			return false;
-		return true;
+		return bagStatus == other.bagStatus && bugId == other.bugId && Objects.equals(dateClose, other.dateClose)
+				&& openingMethod == other.openingMethod;
 	}
+	
+
+
 
 
 }

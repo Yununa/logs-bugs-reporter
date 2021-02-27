@@ -27,7 +27,7 @@ public class Bug {
 	Seriousness seriousness;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name = OPENING_METHOD)
-	OpeningMethod openningMethod;
+	OpeningMethod openingMethod;
 	@ManyToOne
 	@JoinColumn(name = PROGRAMMER_ID, nullable = true)
 	Programmer programmer;
@@ -35,14 +35,14 @@ public class Bug {
 		
 	}
 	public Bug(String description, LocalDate dateOpen, LocalDate dateClose, BugStatus status, Seriousness seriousness,
-			OpeningMethod openningMethod, Programmer programmer) {
+			OpeningMethod openingMethod, Programmer programmer) {
 		super();
 		this.description = description;
 		this.dateOpen = dateOpen;
 		this.dateClose = dateClose;
 		this.status = status;
 		this.seriousness = seriousness;
-		this.openningMethod = openningMethod;
+		this.openingMethod = openingMethod;
 		this.programmer = programmer;
 	}
 	
@@ -64,8 +64,8 @@ public class Bug {
 	public Seriousness getSeriousness() {
 		return seriousness;
 	}
-	public OpeningMethod getOpenningMethod() {
-		return openningMethod;
+	public OpeningMethod getOpeningMethod() {
+		return openingMethod;
 	}
 	public Programmer getProgrammer() {
 		return programmer;
@@ -92,7 +92,7 @@ public class Bug {
 		result = prime * result + ((dateClose == null) ? 0 : dateClose.hashCode());
 		result = prime * result + ((dateOpen == null) ? 0 : dateOpen.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((openningMethod == null) ? 0 : openningMethod.hashCode());
+		result = prime * result + ((openingMethod == null) ? 0 : openingMethod.hashCode());
 		result = prime * result + ((programmer == null) ? 0 : programmer.hashCode());
 		result = prime * result + ((seriousness == null) ? 0 : seriousness.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
@@ -122,7 +122,7 @@ public class Bug {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (openningMethod != other.openningMethod)
+		if (openingMethod != other.openingMethod)
 			return false;
 		if (programmer == null) {
 			if (other.programmer != null)

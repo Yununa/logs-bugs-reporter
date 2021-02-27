@@ -1,9 +1,9 @@
 package telran.logs.bugs.impl;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class BugsReporterImpl implements BugsReporter {
 	public BugResponseDto openBug(BugDto bugDto) {
 		//FIXME exceptions
 		LocalDate dateOpen = bugDto.dateOpen != null ? bugDto.dateOpen : LocalDate.now();
-		Bug bug = new Bug(bugDto.description, dateOpen, null, BugStatus.OPENNED,
+		Bug bug = new Bug(bugDto.description, dateOpen, null, BugStatus.OPENED,
 				bugDto.seriousness, OpeningMethod.MANUAL, null);
 		bugRepository.save(bug);
 		return toBugResponseDto(bug);
@@ -53,10 +53,9 @@ public class BugsReporterImpl implements BugsReporter {
 
 	private BugResponseDto toBugResponseDto(Bug bug) {
 		Programmer programmer = bug.getProgrammer();
-		@Min(1)
 		long programmerId = programmer == null ? 0 : programmer.getId();
 		return new BugResponseDto(bug.getSeriousness(),bug.getDescription(), bug.getDateOpen(),
-				 programmerId, bug.getId(),bug.getDateClose(), bug.getStatus(), bug.getOpenningMethod());
+				 programmerId, bug.getId(),bug.getDateClose(), bug.getStatus(), bug.getOpeningMethod());
 	}
 
 	@Override
@@ -76,12 +75,12 @@ public class BugsReporterImpl implements BugsReporter {
 	public void assignBug(AssignBugData assignData) {
 		//FIXME exceptions
 		Bug bug = bugRepository.findById(assignData.bugId).orElse(null);
-		bug.setDescription(bug.getDescription() + "\nAssignment Description: " + assignData.description);
+		bug.setDescription(bug.getDescription() + BugsReporter.ASSIGNMENT_DESCRIPTION_TITLE + assignData.description);
 		Programmer programmer = programmerRepository.findById(assignData.programmerId).orElse(null);
 		bug.setStatus(BugStatus.ASSIGNED);
 		bug.setProgrammer(programmer);
 	}
-
+	
 	@Override
 	public List<BugResponseDto> getNonAssignedBugs() {
 		// TODO Auto-generated method stub

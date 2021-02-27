@@ -75,7 +75,7 @@ public class BugsOpeningServices {
 
 	private BugStatus getBugStatus(Programmer programmer) {
 		if (programmer == null) {
-			return BugStatus.OPENNED;
+			return BugStatus.OPENED;
 		} else
 			return BugStatus.ASSIGNED;
 	}

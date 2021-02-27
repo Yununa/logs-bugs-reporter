@@ -56,7 +56,7 @@ public class BugsOpeningTest {
 	void noProgrammerServerTest() {
 		LogDto logDtoWithBug = new LogDto(new Date(), LogType.SERVER_EXCEPTION, "without bug", 0, ERROR_MESSAGE);
 		sendingLogDto(logDtoWithBug);
-		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.OPENNED, Seriousness.CRITICAL,
+		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.OPENED, Seriousness.CRITICAL,
 				OpeningMethod.AUTHOMATIC, null);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
@@ -76,7 +76,7 @@ public class BugsOpeningTest {
 	void badRequestNoProgrammerTest() {
 		LogDto logDto = new LogDto(new Date(), LogType.BAD_REQUEST_EXCEPTION, "without bug", 0, ERROR_MESSAGE);
 		sendingLogDto(logDto);
-		Bug bug = new Bug(getDescription(logDto), LocalDate.now(), null, BugStatus.OPENNED, Seriousness.MINOR,
+		Bug bug = new Bug(getDescription(logDto), LocalDate.now(), null, BugStatus.OPENED, Seriousness.MINOR,
 				OpeningMethod.AUTHOMATIC, null);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
