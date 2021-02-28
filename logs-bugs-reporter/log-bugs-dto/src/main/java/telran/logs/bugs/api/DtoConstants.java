@@ -62,6 +62,7 @@ public interface DtoConstants {
 	String LOGS_ENCOUNTERED_EXCPTIONS = "/logs/encountered/exceptions";
 	String LOGS_ENCOUNTERED_ARTIFACTS = "/logs/encountered/artifacts";
 	String LOGS_DISTRIBUTION_ARTIFACT = "/logs/distribution/artifact";
+	String BUGS_PROGRAMMERS_COUNT = "/bugs/programmers/count";
 
 	// Errors & exceptions
 	String ERROR_MESSAGE = "error";
@@ -76,5 +77,6 @@ public interface DtoConstants {
 	String ARTIFACT_BAD_REQUEST = ARTIFACT + LogType.BAD_REQUEST_EXCEPTION;
 	@NotEmpty
 	String ARTIFACT_NO_EXEPTION = ARTIFACT + LogType.NO_EXCEPTION;
+	
 
 }

@@ -1,8 +1,7 @@
 package telran.logs.bugs.impl;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,21 +81,23 @@ public class BugsReporterImpl implements BugsReporter {
 	}
 	
 	@Override
-	public List<BugResponseDto> getNonAssignedBugs() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BugResponseDto> getNonAssignedBugs() {		
+		List<Bug> bugs = bugRepository.findByStatus(BugStatus.OPENED);
+		return toListBugResponseDto(bugs);
 	}
 
+	
 	@Override
 	public void closeBug(CloseBugData closeData) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public List<BugResponseDto> getUnClosedBugsDuration(int days) {
-		// TODO Auto-generated method stub
-		return null;
+		LocalDate dateOpen = LocalDate.now().minusDays(days);
+		List<Bug> bugs = bugRepository.findByStatusNotAndDateOpenBefore(BugStatus.CLOSED, dateOpen);
+		return toListBugResponseDto(bugs);
 	}
 
 	@Override
@@ -112,8 +113,8 @@ public class BugsReporterImpl implements BugsReporter {
 
 	@Override
 	public List<EmailBugsCount> getEmailBugsCounts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<EmailBugsCount> result = bugRepository.emailBugsCounts();
+		return result;
 	}
 
 	@Override

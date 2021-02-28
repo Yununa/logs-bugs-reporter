@@ -35,7 +35,7 @@ class BugsReporterController {
 		LOG.debug("\nOpened & assigned bug is saved with id = {},\nDescription: {},\n Status: {}\n",result.bugId, result.description,result.bagStatus);
 		return result;
 	}
-	
+
 	@PutMapping(BUGS_ASSIGN)
 	void assignBug(@Valid @RequestBody AssignBugData assignData){
 	bugsReporter.assignBug(assignData);
@@ -47,6 +47,13 @@ class BugsReporterController {
 		List<BugResponseDto> result = bugsReporter.getBugsProgrammer(programmerId);
 		LOG.debug("\nTo programmer with id = {},\nfound {} bugs\n",programmerId, result.size());
 		return result;
+	}
+	
+	@GetMapping(BUGS_PROGRAMMERS_COUNT)
+	List<EmailBugsCount> getEmailBugsCount() {
+		List<EmailBugsCount> result = bugsReporter.getEmailBugsCounts();
+		result.forEach(ec -> LOG.debug("\nemail: {}\ncount: {}\n",ec.getEmail(),ec.getCount()));
+		return result ;
 	}
 
 }

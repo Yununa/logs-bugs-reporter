@@ -21,15 +21,53 @@ import telran.logs.bugs.jpa.repo.*;
 @AutoConfigureDataJpa
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BugsReporterTest {
+	static class EmailBugsCountTest implements EmailBugsCount{
+		String email;
+		long count;
+		public EmailBugsCountTest() {
+		}
+		public EmailBugsCountTest(String email, long count) {
+			super();
+			this.email = email;
+			this.count = count;
+		}
+		@Override
+		public String getEmail() {
+			return email;
+		}
+		@Override
+		public long getCount() {
+			return count;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(count, email);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			EmailBugsCountTest other = (EmailBugsCountTest) obj;
+			return count == other.count && Objects.equals(email, other.email);
+		}		
+	}
+	List<EmailBugsCountTest> expectedEmailCounts = Arrays.asList(new EmailBugsCountTest(MOSHE_EMAIL, 4),
+			new EmailBugsCountTest(VASYA_EMAIL, 0));
 	@Autowired
 	WebTestClient testClient;
 	@Autowired
 	BugRepository bugRepo;
-	private static final String PROGRAMMER_N = "Moshe";
+	private static final String PROGRAMMER_MOSHE = "Moshe";
+	private static final String PROGRAMMER_VASYA = "Vasya";
 	private static final @Min(1) long ID_VALUE = 123;
-	private static final @Email String EMAIL_TEST = "moshe@gmail.com";
+	private static final @Email String MOSHE_EMAIL = "moshe@gmail.com";
 	private static final LocalDate DATE_OPEN_TEST = LocalDate.of(2020, 12, 1);
 	private static final @NotEmpty String DESCRIPTION_TEST = "Found bug";
+	private static final @Email String VASYA_EMAIL = "Vasya@gmail.com";
 	BugDto bugDto = new BugDto(Seriousness.BLOCKING, DESCRIPTION_TEST, DATE_OPEN_TEST);
 	BugResponseDto expectBugDto = new BugResponseDto(Seriousness.BLOCKING, DESCRIPTION_TEST, DATE_OPEN_TEST, 0, 1, null,
 			BugStatus.OPENED, OpeningMethod.MANUAL);
@@ -52,8 +90,10 @@ public class BugsReporterTest {
 	@Test
 	@Order(1)
 	void addProgrammerTest() {
-		ProgrammerDto programmer = new ProgrammerDto(ID_VALUE, PROGRAMMER_N, EMAIL_TEST);
+		ProgrammerDto programmer = new ProgrammerDto(ID_VALUE, PROGRAMMER_MOSHE, MOSHE_EMAIL);
 		addProgrammer(BUGS_PROGRAMMERS, programmer);
+		programmer = new ProgrammerDto(ID_VALUE + 1, PROGRAMMER_VASYA, VASYA_EMAIL);
+		addProgrammer(BUGS_PROGRAMMERS,programmer);
 	}
 
 	@Test
@@ -106,6 +146,13 @@ public class BugsReporterTest {
 	void invalidBugProgrammerId() {
 		getRequest(BUGS_PROGRAMMERS + "?" + PROGRAMMER_ID + "=" + 1000, BugResponseDto.class, new LinkedList<>());
 
+	}
+	
+	@Test
+	@Order(6)
+	void emailCountsTest() {
+		testClient.get().uri(BUGS_PROGRAMMERS_COUNT).exchange().expectStatus().isOk()
+		.expectBodyList(EmailBugsCountTest.class).isEqualTo(expectedEmailCounts);
 	}
 
 	private void addProgrammer(String uriStr, Object bodyValue) {
