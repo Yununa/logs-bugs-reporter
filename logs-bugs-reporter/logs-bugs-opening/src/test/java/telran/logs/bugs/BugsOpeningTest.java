@@ -37,7 +37,7 @@ public class BugsOpeningTest {
 		LogDto logDtoWithBug = new LogDto(new Date(), LogType.AUTHENTICATION_EXCEPTION, BUG_ARTIFACT_NUMBER + "1", 0, ERROR_MESSAGE);
 		sendingLogDto(logDtoWithBug);
 		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.ASSIGNED,
-				Seriousness.BLOCKING, OpeningMethod.AUTHOMATIC, programmer);
+				Seriousness.BLOCKING, OpeningMethod.AUTOMATIC, programmer);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
 
@@ -47,7 +47,7 @@ public class BugsOpeningTest {
 		LogDto logDtoWithBug = new LogDto(new Date(), LogType.AUTHORIZATION_EXCEPTION, BUG_ARTIFACT_NUMBER + "1", 0, ERROR_MESSAGE);
 		sendingLogDto(logDtoWithBug);
 		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.ASSIGNED,
-				Seriousness.CRITICAL, OpeningMethod.AUTHOMATIC, programmer);
+				Seriousness.CRITICAL, OpeningMethod.AUTOMATIC, programmer);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
 
@@ -57,7 +57,7 @@ public class BugsOpeningTest {
 		LogDto logDtoWithBug = new LogDto(new Date(), LogType.SERVER_EXCEPTION, "without bug", 0, ERROR_MESSAGE);
 		sendingLogDto(logDtoWithBug);
 		Bug bug = new Bug(getDescription(logDtoWithBug), LocalDate.now(), null, BugStatus.OPENED, Seriousness.CRITICAL,
-				OpeningMethod.AUTHOMATIC, null);
+				OpeningMethod.AUTOMATIC, null);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
 
@@ -67,7 +67,7 @@ public class BugsOpeningTest {
 		LogDto logDto = new LogDto(new Date(), LogType.NO_EXCEPTION, BUG_ARTIFACT_NUMBER + "1", 0, ERROR_MESSAGE);
 		sendingLogDto(logDto);
 		Bug bug = new Bug(getDescription(logDto), LocalDate.now(), null, BugStatus.ASSIGNED, Seriousness.MINOR,
-				OpeningMethod.AUTHOMATIC, programmer);
+				OpeningMethod.AUTOMATIC, programmer);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
 
@@ -77,7 +77,7 @@ public class BugsOpeningTest {
 		LogDto logDto = new LogDto(new Date(), LogType.BAD_REQUEST_EXCEPTION, "without bug", 0, ERROR_MESSAGE);
 		sendingLogDto(logDto);
 		Bug bug = new Bug(getDescription(logDto), LocalDate.now(), null, BugStatus.OPENED, Seriousness.MINOR,
-				OpeningMethod.AUTHOMATIC, null);
+				OpeningMethod.AUTOMATIC, null);
 		assertEquals(bug, bugsRepo.findAll().get(0));
 	}
 

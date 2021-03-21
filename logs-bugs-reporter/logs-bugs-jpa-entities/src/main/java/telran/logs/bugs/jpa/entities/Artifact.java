@@ -3,7 +3,7 @@ import javax.persistence.*;
 import static telran.logs.bugs.api.DtoConstants.*;
 
 @Entity
-@Table(name = ARTIFACTS)
+@Table(name = ARTIFACTS, indexes= {@Index(columnList = PROGRAMMER_ID)})
 public class Artifact {
 	@Id
 	@Column(name = ARTIFACT_ID)

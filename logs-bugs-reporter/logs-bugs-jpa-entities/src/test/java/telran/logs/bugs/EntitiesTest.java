@@ -31,7 +31,7 @@ public class EntitiesTest {
 		Artifact artifact = new Artifact(AUTHENTICATION, programmer);
 		artifacts.save(artifact);
 		Bug bug = new Bug(DESCRIPTION, LocalDate.now(), null, BugStatus.ASSIGNED, Seriousness.MINOR,
-				OpeningMethod.AUTHOMATIC, programmer);
+				OpeningMethod.AUTOMATIC, programmer);
 		bugs.save(bug);
 		List<Bug> bugsList = bugs.findAll();
 		assertEquals(1, bugsList.size());

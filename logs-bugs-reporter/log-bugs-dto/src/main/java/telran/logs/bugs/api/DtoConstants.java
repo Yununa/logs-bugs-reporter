@@ -12,6 +12,8 @@ public interface DtoConstants {
 	String RESULT = "result";
 	String COUNT = "count";
 	String AMOUNT = "amount";
+	String SERIOUSNESS = "seriousness";
+	String N_TYPES = "n_types";
 
 	String OPENING_METHOD = "opening_method";
 	String AUTHENTICATION = "authentication";
@@ -22,6 +24,8 @@ public interface DtoConstants {
 	String PROGRAMMERS = "programmers";
 	String PROGRAMMER_ID = "programmer_id";
 	String PROGRAMMER_NAME = "Programmer";
+	String N_PROGRAMMERS = "N_PROGRAMMERS";
+
 
 	// Assigns
 	String ASSIGNER_NAME = "Opened Bugs Assigner";
@@ -40,17 +44,29 @@ public interface DtoConstants {
 	String BUGS = "bugs";
 	@NotEmpty
 	String BUG_ARTIFACT_NUMBER = "bug";
+	String BUG_ID = "bug_id";
+	
 
 	// Date
 	String DATE_OPEN = "date_open";
 	String DATE_CLOSE = "date_close";
+	String N_DAYS = "n_days";
 
 	// URI
 	String BUGS_PROGRAMMERS = "/bugs/programmers";
 	String BUGS_OPEN = "/bugs/open";
 	String BUGS_OPEN_ASSIGN = "/bugs/open/assign";
 	String BUGS_ASSIGN = "/bugs/assign";
-
+	String BUGS_CLOSE ="/bugs/close";
+	String BUGS_UNCLOSED = "/bugs/unclosed";
+	String BUGS_PROGRAMMERS_COUNT = "/bugs/programmers/count";
+	String BUGS_ARTIFACTS = "/bugs/artifacts";
+	String BUGS_ASSIGNED_NOT = "/bugs/assigned/not";
+	String BUGS_PROGRAMMERS_MOST = "/bugs/programmers/most";
+	String BUGS_PROGRAMMERS_LEAST = "/bugs/programmers/least";
+	String BUGS_SERIOUSNESS_COUNT = "/bugs/seriousness/count";
+	String BUGS_SERIOUSNESS_MOST = "/bugs/seriousness/most";
+	
 	String MAIL_ASSIGNER = "/mail/assigner";
 	String EMAIL_ARTIFACT = "/email/{artifact}";
 	String EMAIL_ARTIFACT_NUMBER = "/email/artifact";
@@ -62,7 +78,7 @@ public interface DtoConstants {
 	String LOGS_ENCOUNTERED_EXCPTIONS = "/logs/encountered/exceptions";
 	String LOGS_ENCOUNTERED_ARTIFACTS = "/logs/encountered/artifacts";
 	String LOGS_DISTRIBUTION_ARTIFACT = "/logs/distribution/artifact";
-	String BUGS_PROGRAMMERS_COUNT = "/bugs/programmers/count";
+	
 
 	// Errors & exceptions
 	String ERROR_MESSAGE = "error";
@@ -78,5 +94,12 @@ public interface DtoConstants {
 	@NotEmpty
 	String ARTIFACT_NO_EXEPTION = ARTIFACT + LogType.NO_EXCEPTION;
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
 }

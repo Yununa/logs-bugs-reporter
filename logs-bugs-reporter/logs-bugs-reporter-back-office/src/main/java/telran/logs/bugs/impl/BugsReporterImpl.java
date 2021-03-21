@@ -3,7 +3,6 @@ package telran.logs.bugs.impl;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import telran.logs.bugs.dto.*;
@@ -17,7 +16,7 @@ public class BugsReporterImpl implements BugsReporter {
 	BugRepository bugRepository;
 	ArtifactRepository artifactRepository;
 	ProgrammerRepository programmerRepository;
-	@Autowired
+
 	public BugsReporterImpl(BugRepository bugRepository, ArtifactRepository artifactRepository,
 			ProgrammerRepository programmerRepository) {
 		this.bugRepository = bugRepository;
@@ -35,9 +34,12 @@ public class BugsReporterImpl implements BugsReporter {
 
 	@Override
 	public ArtifactDto addArtifact(ArtifactDto artifactDto) {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME exceptions had handling and key duplication check
+		Programmer programmer = programmerRepository.findById(artifactDto.programmerId).orElse(null);
+		artifactRepository.save(new Artifact(artifactDto.artifactId, programmer));
+		return artifactDto;
 	}
+	
 
 	@Override
 	@Transactional
@@ -86,11 +88,13 @@ public class BugsReporterImpl implements BugsReporter {
 		return toListBugResponseDto(bugs);
 	}
 
-	
 	@Override
 	public void closeBug(CloseBugData closeData) {
-		// TODO Auto-generated method stub
-		
+		Bug bug = bugRepository.findById(closeData.bugId).orElse(null);
+		LocalDate dateClose = closeData.dateClose != null ? closeData.dateClose : LocalDate.now();
+		bug.setDateClose(dateClose );	
+		bug.setStatus(BugStatus.CLOSED);
+		bug.setDescription(bug.getDescription() + BugsReporter.CLOSE_DATA_DESCRIPTION_TITLE + closeData.description);
 	}
 
 	@Override
@@ -119,14 +123,26 @@ public class BugsReporterImpl implements BugsReporter {
 
 	@Override
 	public List<String> getProgrammersMostBugs(int nProgrammer) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return bugRepository.programmersMostBugs(nProgrammer);
 	}
 
 	@Override
 	public List<String> getProgrammersLeastBugs(int nProgrammers) {
-		// TODO Auto-generated method stub
-		return null;
+		return bugRepository.programmersLeastBugs(nProgrammers);
+	}
+
+	@Override
+	public List<SeriousnessBugCount> getSeriousnessBugCounts() {
+		return Arrays.stream(Seriousness.values()).map(s -> 
+		new SeriousnessBugCount(s, bugRepository.countBySeriousness(s))
+		).sorted((s1, s2) -> Long.compare(s2.getCount(), s1.getCount())) .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<Seriousness> getSeriousnessTypesWithMostBugs(int nTypes) {
+
+		return bugRepository.seriousnessMostBugs(nTypes);
 	}
 
 }

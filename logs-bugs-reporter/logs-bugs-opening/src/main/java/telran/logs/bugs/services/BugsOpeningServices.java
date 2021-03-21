@@ -35,7 +35,7 @@ public class BugsOpeningServices {
 		LOG.debug("\n Bug opening service recieved exception log:\n {}\n", exceptionLog);
 		Programmer programmer = getProgrammer(exceptionLog.artifact);
 		Bug bug = new Bug(getDescription(exceptionLog), LocalDate.now(), null, getBugStatus(programmer),
-				getSeriousness(exceptionLog.logType), OpeningMethod.AUTHOMATIC, programmer);
+				getSeriousness(exceptionLog.logType), OpeningMethod.AUTOMATIC, programmer);
 		bugsRepo.save(bug);
 		LOG.debug("\n Bug opening service has added bug:\n description: {};\n bug status: {};\n "
 				+ "seriousness: {};\n assigned to programmer: {}\n",

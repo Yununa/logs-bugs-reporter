@@ -1,6 +1,7 @@
 package telran.logs.bugs.jpa.entities;
 
 import java.time.LocalDate;
+
 import javax.persistence.*;
 import static telran.logs.bugs.api.DtoConstants.*;
 import telran.logs.bugs.dto.BugStatus;
@@ -8,7 +9,8 @@ import telran.logs.bugs.dto.OpeningMethod;
 import telran.logs.bugs.dto.Seriousness;
 
 @Entity
-@Table(name = BUGS)
+@Table(name = BUGS, indexes = {@Index(columnList = PROGRAMMER_ID),
+		@Index(columnList = SERIOUSNESS)})
 public class Bug {
 	@Id
 	@GeneratedValue
