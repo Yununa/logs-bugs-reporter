@@ -14,6 +14,7 @@ public interface DtoConstants {
 	String AMOUNT = "amount";
 	String SERIOUSNESS = "seriousness";
 	String N_TYPES = "n_types";
+	String STATUS = "status";
 
 	String OPENING_METHOD = "opening_method";
 	String AUTHENTICATION = "authentication";
