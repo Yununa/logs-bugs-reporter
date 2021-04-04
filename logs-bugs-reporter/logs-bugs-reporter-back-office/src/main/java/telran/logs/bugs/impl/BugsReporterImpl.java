@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import telran.logs.bugs.dto.*;
+import telran.logs.bugs.exceptions.NotFoundException;
 import telran.logs.bugs.interfaces.BugsReporter;
 import telran.logs.bugs.jpa.entities.*;
 import telran.logs.bugs.jpa.repo.*;
@@ -62,9 +63,11 @@ public class BugsReporterImpl implements BugsReporter {
 	@Override
 	@Transactional
 	public BugResponseDto openAndAssingBug(BugAssignDto bugDto) {
-		// FIXME exceptions
 		Programmer programmer = programmerRepository.findById(bugDto.programmerId).orElse(null);
-		//TODO exception in the case programmer is null
+		if(programmer == null) {
+			throw new NotFoundException(String.format("assigning can't be done - no programmer"
+					+ " with id %d", bugDto.programmerId));
+		}
 		LocalDate dateOpen = bugDto.dateOpen != null ? bugDto.dateOpen : LocalDate.now();
 		Bug bug = new Bug(bugDto.description, dateOpen, null, BugStatus.ASSIGNED, bugDto.seriousness, OpeningMethod.MANUAL, programmer);
 		bug =  bugRepository.save(bug);

@@ -97,6 +97,7 @@ public class BugsReporterTest {
     List<BugResponseDto> expectedUnAssignedBugs = Arrays.asList(expectBugDto);
     
     List<BugResponseDto> expectedListUnClosed = Arrays.asList(expectBugAssign1, expectBugAssign2, expectBugAssign3, expectBugAssign4);
+    
 	List<BugResponseDto> expectedBugsAfterColose = Arrays.asList(expectBugAssign1, expectBugAssign2, expectBugAssign3,
 			expectBugAssign4);
     List<SeriousnessBugCount> seriousnessBugsDistribution = Arrays.asList(
@@ -107,6 +108,7 @@ public class BugsReporterTest {
 			
 			);
 	List<Seriousness> seriousnessBugsMost = Arrays.asList(Seriousness.BLOCKING);
+	
 	@Test
 	@Order(1)
 	void addProgrammerTest() {
@@ -152,9 +154,9 @@ public class BugsReporterTest {
 	@Test
 	@Order(6)
 	void bugsProgrammersBeforeClose() {
-		List<BugResponseDto> expectedList = expectedBugsToProgrammer;
-		bugsProgrammerTest(BugResponseDto.class, expectedList);
+		bugsProgrammerTest(BugResponseDto.class, expectedBugsToProgrammer);
 	}
+	
 	@Test
 	@Order(7)
 	void closeBugTest() {
@@ -217,8 +219,8 @@ public class BugsReporterTest {
 	
 	@Test
 	void emailCountsTest() {
-		testClient.get().uri(BUGS_PROGRAMMERS_COUNT).exchange().expectStatus().isOk()
-		.expectBodyList(EmailBugsCountTest.class).isEqualTo(expectedEmailCounts);
+		getRequestList(BUGS_PROGRAMMERS_COUNT, EmailBugsCountTest.class, expectedEmailCounts);
+		
 	}
 
 	@Test
@@ -233,16 +235,33 @@ public class BugsReporterTest {
 
 	@Test
 	void seriousnessDistribution() {
-		testClient.get().uri(BUGS_SERIOUSNESS_COUNT).exchange().expectStatus().isOk()
-		.expectBodyList(SeriousnessBugCount.class).isEqualTo(seriousnessBugsDistribution);
+		getRequestList(BUGS_SERIOUSNESS_COUNT, SeriousnessBugCount.class, seriousnessBugsDistribution);
 	}
 	
 	@Test
 	void seriousnessMostBugs() {
-		testClient.get().uri(BUGS_SERIOUSNESS_MOST).exchange().expectStatus().isOk()
-		.expectBodyList(Seriousness.class).isEqualTo(seriousnessBugsMost);
+		getRequestList(BUGS_SERIOUSNESS_MOST, Seriousness.class, seriousnessBugsMost);
 	}
 
+	@Test
+	void invalidSeriousnessMostBugs() {
+		invalidGetRequest(BUGS_SERIOUSNESS_MOST + "?" + N_TYPES + "=" + "-1");
+	}	
+
+	@Test
+	void invalidOpenAndAssign() {
+		BugAssignDto invalidBugAssignDto =
+				new BugAssignDto(Seriousness.BLOCKING,
+						DESCRIPTION_TEST, null, 100000);
+		notFoundPutRequest( BUGS_OPEN_ASSIGN, invalidBugAssignDto);
+	}
+
+	private void notFoundPutRequest( String uriStr, Object bodyValue) {
+		testClient.post().uri(uriStr)
+		.contentType(MediaType.APPLICATION_JSON)
+		.bodyValue(bodyValue).exchange().expectStatus().isNotFound();
+	}
+	
 	private <T> void addPostRequest(String uriStr, Object bodyValue, Class<T> clazz) {
 		testClient.post().uri(uriStr).contentType(MediaType.APPLICATION_JSON).bodyValue(bodyValue).exchange()
 		.expectStatus().isOk().expectBody(clazz);	
@@ -273,6 +292,10 @@ public class BugsReporterTest {
 	private void invalidPutRequest(String uriStr, Object invalidBodyValue) {
 		testClient.put().uri(uriStr).contentType(MediaType.APPLICATION_JSON).bodyValue(invalidBodyValue).exchange()
 				.expectStatus().isBadRequest();
+	}
+	
+	private void invalidGetRequest(String uriStr) {
+		testClient.get().uri(uriStr).exchange().expectStatus().isBadRequest();
 	}
 	
 	private void getArrayProgrammers(String uriStr, String[] expected) {

@@ -2,15 +2,18 @@ package telran.logs.bugs.controllers;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import telran.logs.bugs.dto.*;
 import telran.logs.bugs.interfaces.BugsReporter;
 import static telran.logs.bugs.api.DtoConstants.*;
 import java.util.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 
 @RestController
+@Validated //make spring validate annotated parameters of GET requests
 public class BugsReporterController {
 	static Logger LOG = LoggerFactory.getLogger(BugsReporterController.class);
 	@Autowired
@@ -79,21 +82,21 @@ public class BugsReporterController {
 	}
 	
 	@GetMapping(BUGS_UNCLOSED) 
-	List<BugResponseDto> getUnClosedBugsDuration(@RequestParam(N_DAYS)int days){
+	List<BugResponseDto> getUnClosedBugsDuration(@RequestParam(N_DAYS)@Min(0)int days){
 		List<BugResponseDto> result = bugsReporter.getUnClosedBugsDuration(days);
 	    LOG.debug("\n{} bugs not cloused in : {} after date open", result.size(), days);
 		return result ;
 	}
 	
 	@GetMapping(BUGS_PROGRAMMERS_MOST)
-	List<String> getMostBugsProgrammers(@RequestParam(name=N_PROGRAMMERS, defaultValue = "2") int nProgrammers) {
+	List<String> getMostBugsProgrammers(@RequestParam(name=N_PROGRAMMERS, defaultValue = "2")@Min(1) int nProgrammers) {
 		List<String> res = bugsReporter.getProgrammersMostBugs(nProgrammers);
 		LOG.debug("getMostBugsProgrammers: list of programmers {}", res);
 		return res ;
 	}
 	
 	@GetMapping(BUGS_PROGRAMMERS_LEAST)
-	List<String> getLeastBugsProgrammers(@RequestParam(name = N_PROGRAMMERS, defaultValue = "2") int nProgrammers) {
+	List<String> getLeastBugsProgrammers(@RequestParam(name = N_PROGRAMMERS, defaultValue = "2")@Min(1) int nProgrammers) {
 		List<String> res = bugsReporter.getProgrammersLeastBugs(nProgrammers);
 		LOG.debug("getMostBugsProgrammers: list of programmers {}", res);
 		return res ;
@@ -107,9 +110,10 @@ public class BugsReporterController {
 	}
 	
 	@GetMapping(BUGS_SERIOUSNESS_MOST)
-	List<Seriousness> getSeriousnessBugsMost(@RequestParam (name = N_TYPES, defaultValue = "2") int nTypes) {
+	List<Seriousness> getSeriousnessBugsMost(@RequestParam (name = N_TYPES, defaultValue = "2")
+	@Min(1)int nTypes) {
 		List<Seriousness> res = bugsReporter.getSeriousnessTypesWithMostBugs(nTypes);
-		LOG.debug("List of seriousness types with most bugs {}", res);
+		LOG.debug("List of seriousness types with most bugs {}; nTypes: {}", res, nTypes);
 		return res;
 	}
 }
