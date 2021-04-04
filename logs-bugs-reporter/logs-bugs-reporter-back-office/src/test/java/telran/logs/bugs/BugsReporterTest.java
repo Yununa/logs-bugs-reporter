@@ -70,7 +70,7 @@ public class BugsReporterTest {
 	private static final LocalDate DATE_OPEN_TEST = LocalDate.of(2021, 1, 1);
 	private static final @NotEmpty String DESCRIPTION_TEST = "Found bug";
 	private static final @Email String VASYA_EMAIL = "Vasya@gmail.com";
-	private static final @NotEmpty String ARTIFACT_ID_TEST = "artifact";
+	private static final @NotEmpty String ARTIFACT_ID_TEST = "artifact123";
 	private static final @NotEmpty String DESCRIPTION_CLOSE = "Bug was assigned and closed";
 	private static final @NotEmpty String TEST_CLOSE_DESCRIPTION = "closed by QA";
 	private static final @Min(1) long BUG_CLOSE_ID_VALUE = 2;
@@ -119,6 +119,7 @@ public class BugsReporterTest {
 	}
 	
 	@Test
+	@Order(10)
 	void addArtifactTest() {
 		ArtifactDto artifact = new ArtifactDto(ARTIFACT_ID_TEST, MOSHE_ID_VALUE);
 		addPostRequest(BUGS_ARTIFACTS,artifact,Artifact.class);
@@ -250,13 +251,73 @@ public class BugsReporterTest {
 
 	@Test
 	void invalidOpenAndAssign() {
-		BugAssignDto invalidBugAssignDto =
-				new BugAssignDto(Seriousness.BLOCKING,
+		BugAssignDto invalidBugAssignDto = new BugAssignDto(Seriousness.BLOCKING,
 						DESCRIPTION_TEST, null, 100000);
-		notFoundPutRequest( BUGS_OPEN_ASSIGN, invalidBugAssignDto);
+		notFoundPostRequest( BUGS_OPEN_ASSIGN, invalidBugAssignDto);
+	}
+	
+	
+	
+	@Test
+	void addExistingArtifact() {
+		ArtifactDto artifact = new ArtifactDto(ARTIFACT_ID_TEST, MOSHE_ID_VALUE);
+		postClientError(BUGS_ARTIFACTS, artifact);
+	}
+	
+	
+
+	@Test 
+	void addArtifactNoProgrammer(){
+		notFoundPostRequest(BUGS_ARTIFACTS, new ArtifactDto(ARTIFACT_ID_TEST + 1000, 200050));
+	}
+	
+	@Test
+	void assignBugNoProgrammer() {
+		notFoundPutRequest(BUGS_ASSIGN, new AssignBugData(1, 30000 , DESCRIPTION_TEST));
+	}
+	
+	@Test
+	void assignBugNoBug() {
+		notFoundPutRequest(BUGS_ASSIGN, new AssignBugData(20000, MOSHE_ID_VALUE, DESCRIPTION_TEST));
+	}
+	
+	@Test
+	void closeBugNoBug() {
+		notFoundPutRequest(BUGS_CLOSE, new CloseBugData(1000000, LocalDate.now(), DESCRIPTION_CLOSE));
+	}
+	
+	@Test
+	void addExistingProgrammer() {
+		ProgrammerDto programmer = new ProgrammerDto(MOSHE_ID_VALUE, PROGRAMMER_MOSHE, MOSHE_EMAIL);
+		postClientError(BUGS_PROGRAMMERS, programmer);
+		
+	}
+	
+	@Test
+	void addExistingEmail() {
+
+		postServerError(BUGS_PROGRAMMERS, new ProgrammerDto(400000, "Vasya", MOSHE_EMAIL));
+
 	}
 
+	private void postClientError(String uriStr, Object bodyValue) {
+		testClient.post().uri(uriStr).contentType(MediaType.APPLICATION_JSON)
+		.bodyValue(bodyValue).exchange().expectStatus().is4xxClientError();
+	}
+
+	private void postServerError(String uriStr, Object bodyValue) {
+		testClient.post().uri(uriStr).contentType(MediaType.APPLICATION_JSON)
+		.bodyValue(bodyValue).exchange().expectStatus().is5xxServerError();
+		
+	}
+	
 	private void notFoundPutRequest( String uriStr, Object bodyValue) {
+		testClient.put().uri(uriStr)
+		.contentType(MediaType.APPLICATION_JSON)
+		.bodyValue(bodyValue).exchange().expectStatus().isNotFound();
+	}
+	
+	private void notFoundPostRequest( String uriStr, Object bodyValue) {
 		testClient.post().uri(uriStr)
 		.contentType(MediaType.APPLICATION_JSON)
 		.bodyValue(bodyValue).exchange().expectStatus().isNotFound();

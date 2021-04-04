@@ -154,4 +154,19 @@ public class LogsInfoTest {
 	void artifactsEnocounteredBadRequest() {
 		getBadRequest(LOGS_ENCOUNTERED_ARTIFACTS, AMOUNT, " ");
 	}
+	@Test
+	void badRequestMostArtifacts() {
+		String uriStr = LOGS_ENCOUNTERED_ARTIFACTS + "?" + AMOUNT + "=-1";
+		badGetRequest(uriStr);
+	}
+	@Test
+	void badRequestMostExceptionTypes() {
+		String uriStr = LOGS_ENCOUNTERED_EXCPTIONS + "?" + AMOUNT + "=0";
+		badGetRequest(uriStr);
+	}
+	private void badGetRequest(String uriStr) {
+		webClient.get().uri(uriStr)
+		.exchange().expectStatus().isBadRequest();
+	}
+
 }

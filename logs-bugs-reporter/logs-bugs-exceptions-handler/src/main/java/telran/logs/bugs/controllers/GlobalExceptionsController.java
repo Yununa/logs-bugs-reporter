@@ -29,15 +29,9 @@ public class GlobalExceptionsController {
 	String notFounHandler(NotFoundException e) {
 		return processingExceptions(e);
 	}
-	
-	@ExceptionHandler(ServerException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	String serverExceptionHandler(ServerException e) {
-		return processingExceptions(e);
-	}
 
 	private String processingExceptions(Exception e) {
-		LOG.error("exception class: {}, massage: {}", e.getClass().getSimpleName(), e.getMessage());
+		LOG.error("\nexception class: {}\nmassage: {}\n", e.getClass().getSimpleName(), e.getMessage());
 		return e.getMessage();
 	}
 }

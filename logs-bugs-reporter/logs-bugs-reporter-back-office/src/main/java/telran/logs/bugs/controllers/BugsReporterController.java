@@ -82,7 +82,7 @@ public class BugsReporterController {
 	}
 	
 	@GetMapping(BUGS_UNCLOSED) 
-	List<BugResponseDto> getUnClosedBugsDuration(@RequestParam(N_DAYS)@Min(0)int days){
+	List<BugResponseDto> getUnClosedBugsDuration(@RequestParam(N_DAYS)@Min(0) int days){
 		List<BugResponseDto> result = bugsReporter.getUnClosedBugsDuration(days);
 	    LOG.debug("\n{} bugs not cloused in : {} after date open", result.size(), days);
 		return result ;
@@ -111,7 +111,7 @@ public class BugsReporterController {
 	
 	@GetMapping(BUGS_SERIOUSNESS_MOST)
 	List<Seriousness> getSeriousnessBugsMost(@RequestParam (name = N_TYPES, defaultValue = "2")
-	@Min(1)int nTypes) {
+	@Min(1) int nTypes) {
 		List<Seriousness> res = bugsReporter.getSeriousnessTypesWithMostBugs(nTypes);
 		LOG.debug("List of seriousness types with most bugs {}; nTypes: {}", res, nTypes);
 		return res;
